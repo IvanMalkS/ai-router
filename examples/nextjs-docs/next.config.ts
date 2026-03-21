@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { withAiRouter } from 'ai-router-plugin-next';
+import { withAiRouter } from '@van1s1mys/ai-router-plugin-next';
 
 const nextConfig = {
   output: 'export' as const,

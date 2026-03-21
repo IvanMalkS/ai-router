@@ -8,8 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "ai-router": "workspace:*",
-    "ai-router-plugin-next": "workspace:*",
+    "@van1s1mys/ai-router": "workspace:*",
+    "@van1s1mys/ai-router-plugin-next": "workspace:*",
     "next": "^15.3.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
