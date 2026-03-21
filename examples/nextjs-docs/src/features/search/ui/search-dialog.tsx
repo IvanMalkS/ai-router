@@ -33,6 +33,7 @@ export function SearchDialog({ lang, placeholder, triggerText, loadingText, noRe
   const [isSearching, setIsSearching] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [activeModel, setActiveModel] = useState<string | null>(null);
   const routerRef = useRef<SmartRouter | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const nextRouter = useRouter();
@@ -42,13 +43,19 @@ export function SearchDialog({ lang, placeholder, triggerText, loadingText, noRe
     if (routerRef.current) return;
 
     setIsLoading(true);
-    const sr = new SmartRouter({ routes, threshold: 0.1, model: 'Xenova/multilingual-e5-small' });
+    const sr = new SmartRouter({
+      routes,
+      threshold: 0.1,
+      model: ['Xenova/all-MiniLM-L6-v2', 'Xenova/multilingual-e5-small'],
+      onModelUpgrade: (modelId) => setActiveModel(modelId),
+    });
     routerRef.current = sr;
 
     sr.ready
       .then(() => {
         setIsReady(true);
         setIsLoading(false);
+        setActiveModel('Xenova/all-MiniLM-L6-v2');
       })
       .catch(() => setIsLoading(false));
 

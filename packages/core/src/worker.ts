@@ -23,6 +23,7 @@ type FeatureExtractor = (text: string, options: { pooling: 'mean' | 'none' | 'cl
 let db: AnyOrama;
 let extractor: FeatureExtractor;
 let threshold = 0.5;
+let storedRoutes: { path: string; title: string; description?: string }[] = [];
 
 /**
  * Safely posts a message back to the main thread.
@@ -48,6 +49,35 @@ async function generateEmbedding(text: string): Promise<number[]> {
   return Array.from(output.data);
 }
 
+/**
+ * Creates an Orama database and indexes all stored routes
+ * using the current extractor.
+ */
+async function buildIndex(): Promise<AnyOrama> {
+  const newDb = await create({
+    schema: {
+      path: 'string',
+      title: 'string',
+      description: 'string',
+      embedding: 'vector[384]',
+    },
+  });
+
+  for (const route of storedRoutes) {
+    const textToEmbed = `${route.title}. ${route.description || ''}`;
+    const embedding = await generateEmbedding(textToEmbed);
+
+    await insert(newDb, {
+      path: route.path,
+      title: route.title,
+      description: route.description || '',
+      embedding,
+    });
+  }
+
+  return newDb;
+}
+
 self.onmessage = async (event: MessageEvent<WorkerInMessage>) => {
   try {
     const msg = event.data;
@@ -56,31 +86,20 @@ self.onmessage = async (event: MessageEvent<WorkerInMessage>) => {
       case 'INIT': {
         try {
           threshold = msg.threshold;
+          storedRoutes = msg.routes;
+          const models = msg.models;
 
-          extractor = await pipeline('feature-extraction', msg.model) as unknown as FeatureExtractor;
-
-          db = await create({
-            schema: {
-              path: 'string',
-              title: 'string',
-              description: 'string',
-              embedding: 'vector[384]',
-            },
-          });
-
-          for (const route of msg.routes) {
-            const textToEmbed = `${route.title}. ${route.description || ''}`;
-            const embedding = await generateEmbedding(textToEmbed);
-
-            await insert(db, {
-              path: route.path,
-              title: route.title,
-              description: route.description || '',
-              embedding,
-            });
-          }
-
+          // Load the first model and become ready
+          extractor = await pipeline('feature-extraction', models[0]) as unknown as FeatureExtractor;
+          db = await buildIndex();
           post({ type: 'READY' });
+
+          // Progressively upgrade to heavier models in the background
+          for (let i = 1; i < models.length; i++) {
+            extractor = await pipeline('feature-extraction', models[i]) as unknown as FeatureExtractor;
+            db = await buildIndex();
+            post({ type: 'MODEL_UPGRADED', model: models[i] });
+          }
         } catch (error: unknown) {
           post({ type: 'INIT_ERROR', error: error instanceof Error ? error.message : 'Unknown init error' });
         }

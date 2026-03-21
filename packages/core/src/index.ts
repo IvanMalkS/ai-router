@@ -41,10 +41,13 @@ function createBlobWorker(): Worker {
  *     { path: '/pricing', title: 'Pricing', description: 'cost, plans, subscription' },
  *     { path: '/contact', title: 'Contact', description: 'support, phone, address' },
  *   ],
+ *   // Start with a fast lightweight model, then upgrade to a better one in the background
+ *   model: ['Xenova/all-MiniLM-L6-v2', 'Xenova/multilingual-e5-small'],
  *   threshold: 0.5,
+ *   onModelUpgrade: (modelId) => console.log(`Upgraded to ${modelId}`),
  * });
  *
- * // Wait for the model to load (~22 MB on first run, cached afterwards)
+ * // Wait for the first (lightest) model to load — ready to search immediately
  * await router.ready;
  *
  * // Search by meaning — typos and synonyms work too
@@ -66,6 +69,7 @@ export class SmartRouter {
   >();
   private destroyed = false;
   private readonly ssr: boolean;
+  private onModelUpgrade?: (modelId: string) => void;
 
   /**
    * Creates a new SmartRouter instance.
@@ -91,6 +95,7 @@ export class SmartRouter {
       return;
     }
 
+    this.onModelUpgrade = options.onModelUpgrade;
     this.initWorker(options);
   }
 
@@ -131,6 +136,10 @@ export class SmartRouter {
             this.rejectReady(new Error(msg.error));
             break;
 
+          case 'MODEL_UPGRADED':
+            this.onModelUpgrade?.(msg.model);
+            break;
+
           case 'SEARCH_RESULT': {
             const pending = this.pendingSearches.get(msg.id);
             if (pending) {
@@ -166,10 +175,14 @@ export class SmartRouter {
     };
 
     try {
+      const models = Array.isArray(options.model)
+        ? options.model
+        : [options.model || 'Xenova/all-MiniLM-L6-v2'];
+
       this.worker.postMessage({
         type: 'INIT',
         routes: options.routes,
-        model: options.model || 'Xenova/all-MiniLM-L6-v2',
+        models,
         threshold: options.threshold ?? 0.5,
       });
     } catch {
