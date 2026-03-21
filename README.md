@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="https://img.shields.io/npm/v/ai-router?color=blue&label=ai-router" alt="npm version" />
-  <img src="https://img.shields.io/npm/v/ai-router-plugin-vite?color=blue&label=vite" alt="vite plugin" />
-  <img src="https://img.shields.io/npm/v/ai-router-plugin-next?color=blue&label=next" alt="next plugin" />
-  <img src="https://img.shields.io/npm/v/ai-router-plugin-webpack?color=blue&label=webpack" alt="webpack plugin" />
-  <img src="https://img.shields.io/npm/l/ai-router" alt="license" />
-  <img src="https://img.shields.io/bundlephobia/minzip/ai-router" alt="bundle size" />
+  <img src="https://img.shields.io/npm/v/@van1s1mys/ai-router?color=blue&label=ai-router" alt="npm version" />
+  <img src="https://img.shields.io/npm/v/@van1s1mys/ai-router-plugin-vite?color=blue&label=vite" alt="vite plugin" />
+  <img src="https://img.shields.io/npm/v/@van1s1mys/ai-router-plugin-next?color=blue&label=next" alt="next plugin" />
+  <img src="https://img.shields.io/npm/v/@van1s1mys/ai-router-plugin-webpack?color=blue&label=webpack" alt="webpack plugin" />
+  <img src="https://img.shields.io/npm/l/@van1s1mys/ai-router" alt="license" />
+  <img src="https://img.shields.io/bundlephobia/minzip/@van1s1mys/ai-router" alt="bundle size" />
 </p>
 
 <h1 align="center">ai-router</h1>
@@ -38,19 +38,19 @@ User query: "how much does it cost?"
 
 | Package | Description |
 |---|---|
-| [`ai-router`](packages/core) | Core library — SmartRouter class |
-| [`ai-router-plugin-vite`](packages/plugin-vite) | Vite plugin — auto-scan routes |
-| [`ai-router-plugin-next`](packages/plugin-next) | Next.js plugin — wraps webpack with sensible defaults |
-| [`ai-router-plugin-webpack`](packages/plugin-webpack) | webpack plugin — auto-scan routes |
+| [`@van1s1mys/ai-router`](packages/core) | Core library — SmartRouter class |
+| [`@van1s1mys/ai-router-plugin-vite`](packages/plugin-vite) | Vite plugin — auto-scan routes |
+| [`@van1s1mys/ai-router-plugin-next`](packages/plugin-next) | Next.js plugin — wraps webpack with sensible defaults |
+| [`@van1s1mys/ai-router-plugin-webpack`](packages/plugin-webpack) | webpack plugin — auto-scan routes |
 
 ## Quick start
 
 ```bash
-npm install ai-router
+npm install @van1s1mys/ai-router
 ```
 
 ```ts
-import { SmartRouter } from 'ai-router';
+import { SmartRouter } from '@van1s1mys/ai-router';
 
 const router = new SmartRouter({
   routes: [
@@ -76,12 +76,12 @@ Plugins auto-scan your pages directory and expose routes via a virtual module �
 ### Vite
 
 ```bash
-npm install ai-router ai-router-plugin-vite
+npm install @van1s1mys/ai-router ai-router-plugin-vite
 ```
 
 ```ts
 // vite.config.ts
-import { aiRouter } from 'ai-router-plugin-vite';
+import { aiRouter } from '@van1s1mys/ai-router-plugin-vite';
 
 export default defineConfig({
   plugins: [aiRouter()],
@@ -90,7 +90,7 @@ export default defineConfig({
 
 ```ts
 // app.ts
-import { SmartRouter } from 'ai-router';
+import { SmartRouter } from '@van1s1mys/ai-router';
 import { routes } from 'virtual:ai-router';
 
 const router = new SmartRouter({ routes });
@@ -99,12 +99,12 @@ const router = new SmartRouter({ routes });
 ### Next.js
 
 ```bash
-npm install ai-router ai-router-plugin-next
+npm install @van1s1mys/ai-router ai-router-plugin-next
 ```
 
 ```ts
 // next.config.ts
-import { withAiRouter } from 'ai-router-plugin-next';
+import { withAiRouter } from '@van1s1mys/ai-router-plugin-next';
 
 export default withAiRouter({
   /* your Next.js config */
@@ -114,12 +114,12 @@ export default withAiRouter({
 ### webpack
 
 ```bash
-npm install ai-router ai-router-plugin-webpack
+npm install @van1s1mys/ai-router ai-router-plugin-webpack
 ```
 
 ```ts
 // webpack.config.ts
-import { AiRouterPlugin } from 'ai-router-plugin-webpack';
+import { AiRouterPlugin } from '@van1s1mys/ai-router-plugin-webpack';
 
 export default {
   plugins: [new AiRouterPlugin()],
