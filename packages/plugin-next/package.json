@@ -1,0 +1,41 @@
+{
+  "name": "ai-router-plugin-next",
+  "version": "1.0.0",
+  "description": "Next.js plugin for ai-router — auto-scan app/pages dirs and generate route config",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "keywords": [
+    "next",
+    "nextjs",
+    "ai-router"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@ai-router/shared": "workspace:*",
+    "ai-router-plugin-webpack": "workspace:*"
+  },
+  "peerDependencies": {
+    "next": ">=13.0.0"
+  }
+}

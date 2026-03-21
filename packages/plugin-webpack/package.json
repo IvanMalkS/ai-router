@@ -1,0 +1,40 @@
+{
+  "name": "ai-router-plugin-webpack",
+  "version": "1.0.0",
+  "description": "webpack plugin for ai-router — auto-scan pages and generate route config",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "keywords": [
+    "webpack",
+    "webpack-plugin",
+    "ai-router"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@ai-router/shared": "workspace:*"
+  },
+  "peerDependencies": {
+    "webpack": ">=5.0.0"
+  }
+}

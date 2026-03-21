@@ -1,0 +1,39 @@
+# Source
+src/
+tsup.config.ts
+tsconfig.json
+
+# Tests
+__tests__/
+*.test.*
+*.spec.*
+coverage/
+
+# Examples & docs
+examples/
+docs/
+*.md
+!README.md
+!CHANGELOG.md
+
+# Config files
+.github/
+.vscode/
+.idea/
+.editorconfig
+.eslintrc*
+.prettierrc*
+.gitignore
+
+# Monorepo
+pnpm-workspace.yaml
+pnpm-lock.yaml
+turbo.json
+
+# Dev artifacts
+*.tgz
+.DS_Store
+Thumbs.db
+*.tsbuildinfo
+.turbo/
+.cache/

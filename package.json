@@ -1,0 +1,21 @@
+{
+  "name": "ai-router-monorepo",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel dev",
+    "example": "vite example",
+    "publish:packages": "bash scripts/publish.sh",
+    "publish:dry": "DRY_RUN=1 bash scripts/publish.sh",
+    "deploy:examples": "bash scripts/deploy-examples.sh",
+    "deploy:examples:dry": "DRY_RUN=1 bash scripts/deploy-examples.sh",
+    "deploy:vercel": "bash scripts/deploy-vercel.sh",
+    "deploy:vercel:prod": "bash scripts/deploy-vercel.sh --prod"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.1"
+  }
+}

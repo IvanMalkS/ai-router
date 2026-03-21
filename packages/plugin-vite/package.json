@@ -1,0 +1,40 @@
+{
+  "name": "ai-router-plugin-vite",
+  "version": "1.0.0",
+  "description": "Vite plugin for ai-router — auto-scan pages and generate route config",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "ai-router"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@ai-router/shared": "workspace:*"
+  },
+  "peerDependencies": {
+    "vite": ">=5.0.0"
+  }
+}

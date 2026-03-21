@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "title": "ai-router — AI语义搜索路由器",
+    "description": "按语义导航，而非关键词"
+  },
+  "nav": {
+    "home": "首页",
+    "gettingStarted": "快速开始",
+    "apiReference": "API参考",
+    "plugins": "插件",
+    "examples": "示例",
+    "search": "搜索文档…",
+    "searchPlaceholder": "随便问… 例如「如何设置路由？」"
+  },
+  "home": {
+    "hero": "AI语义搜索路由器",
+    "subtitle": "按语义导航，而非关键词。基于HuggingFace嵌入和Orama向量搜索——完全在浏览器中运行。",
+    "feature1Title": "语义搜索",
+    "feature1Desc": "使用AI嵌入理解用户意图。拼写错误、同义词和自然语言开箱即用。",
+    "feature2Title": "零后端",
+    "feature2Desc": "ML模型在浏览器的Web Worker中运行。无需API调用，无服务器成本，完全支持离线。",
+    "feature3Title": "插件生态系统",
+    "feature3Desc": "为Vite、webpack和Next.js提供一流插件。自动扫描页面目录——零配置。",
+    "feature4Title": "SSR安全",
+    "feature4Desc": "优雅处理服务端渲染。路由器在服务器上不活动，仅在浏览器中激活。",
+    "getStarted": "开始使用",
+    "viewOnGithub": "GitHub",
+    "installTitle": "秒速安装",
+    "installCode": "npm install ai-router"
+  },
+  "gettingStarted": {
+    "title": "快速开始",
+    "intro": "在5分钟内让ai-router在你的项目中运行。",
+    "step1Title": "1. 安装",
+    "step1Desc": "安装核心包和可选的构建工具插件：",
+    "step2Title": "2. 定义路由",
+    "step2Desc": "使用语义描述创建路由配置：",
+    "step3Title": "3. 搜索",
+    "step3Desc": "等待模型加载，然后按语义搜索：",
+    "step4Title": "4. 清理",
+    "step4Desc": "完成后销毁路由器（例如在组件卸载时）：",
+    "note": "首次加载需下载约22 MB的ONNX模型。浏览器会缓存以供后续访问。"
+  },
+  "apiReference": {
+    "title": "API参考",
+    "smartRouterTitle": "SmartRouter",
+    "smartRouterDesc": "用于语义路由匹配的主类。",
+    "constructorTitle": "构造函数",
+    "constructorDesc": "使用给定选项创建新的SmartRouter实例。",
+    "optionsTitle": "RouteOptions",
+    "routesDesc": "要索引的路由数组。每个路由包含path、title和可选的description。",
+    "modelDesc": "HuggingFace模型ID。默认：\"Xenova/all-MiniLM-L6-v2\"。必须生成384维向量。",
+    "thresholdDesc": "最低相似度分数（0–1）。默认：0.5。",
+    "readyTitle": "ready: Promise<void>",
+    "readyDesc": "模型加载且路由索引完成后解析。SSR期间立即解析。",
+    "searchTitle": "search(query: string): Promise<SearchResult | null>",
+    "searchDesc": "为自然语言查询找到最佳匹配路由。如果没有路由达到阈值或在SSR期间，返回null。",
+    "destroyTitle": "destroy(): void",
+    "destroyDesc": "终止Web Worker并拒绝所有待处理的搜索。可安全多次调用。",
+    "searchResultTitle": "SearchResult",
+    "searchResultDesc": "由search()返回。包含path（匹配的路由URL）和score（相似度0–1）。"
+  },
+  "plugins": {
+    "title": "插件",
+    "intro": "ai-router提供构建工具插件，在构建时自动扫描页面目录并生成路由配置。",
+    "viteTitle": "Vite插件",
+    "viteDesc": "安装和配置Vite插件：",
+    "webpackTitle": "webpack插件",
+    "webpackDesc": "安装和配置webpack插件：",
+    "nextTitle": "Next.js插件",
+    "nextDesc": "Next.js插件封装了webpack插件并提供合理的默认配置：",
+    "virtualModuleTitle": "虚拟模块",
+    "virtualModuleDesc": "所有插件都提供virtual:ai-router模块，导出路由数组：",
+    "annotationTitle": "@ai-route注解",
+    "annotationDesc": "通过注释注解为页面文件添加元数据："
+  },
+  "examples": {
+    "title": "示例",
+    "intro": "试试下面的实时搜索——它使用ai-router来找到最匹配的文档页面。",
+    "liveSearchTitle": "实时搜索演示",
+    "liveSearchDesc": "输入问题或短语，查看哪个路由最匹配：",
+    "tryThese": "试试这些查询：",
+    "query1": "这要多少钱？",
+    "query2": "如何安装这个库？",
+    "query3": "webpack配置",
+    "query4": "支持哪些模型？",
+    "resultPath": "匹配的路由：",
+    "resultScore": "置信度：",
+    "noResult": "没有路由超过阈值。",
+    "loading": "正在加载AI模型…"
+  },
+  "footer": {
+    "madeWith": "使用ai-router + Next.js构建",
+    "license": "MIT许可证"
+  }
+}

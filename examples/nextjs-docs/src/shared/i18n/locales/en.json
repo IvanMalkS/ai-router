@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "title": "ai-router — AI-Powered Semantic Search Router",
+    "description": "Navigate your app by meaning, not keywords"
+  },
+  "nav": {
+    "home": "Home",
+    "gettingStarted": "Getting Started",
+    "apiReference": "API Reference",
+    "plugins": "Plugins",
+    "examples": "Examples",
+    "search": "Search docs…",
+    "searchPlaceholder": "Ask anything… e.g. \"how to set up routing?\""
+  },
+  "home": {
+    "hero": "AI-Powered Semantic Search Router",
+    "subtitle": "Navigate your app by meaning, not keywords. Powered by HuggingFace embeddings and Orama vector search — runs entirely in the browser.",
+    "feature1Title": "Semantic Search",
+    "feature1Desc": "Uses AI embeddings to understand user intent. Typos, synonyms, and natural language all work out of the box.",
+    "feature2Title": "Zero Backend",
+    "feature2Desc": "The ML model runs inside a Web Worker in the browser. No API calls, no server costs, fully offline-capable.",
+    "feature3Title": "Plugin Ecosystem",
+    "feature3Desc": "First-class plugins for Vite, webpack, and Next.js. Auto-scan your pages directory — zero config.",
+    "feature4Title": "SSR Safe",
+    "feature4Desc": "Gracefully handles server-side rendering. The router is inert on the server and activates only in the browser.",
+    "getStarted": "Get Started",
+    "viewOnGithub": "View on GitHub",
+    "installTitle": "Install in seconds",
+    "installCode": "npm install ai-router"
+  },
+  "gettingStarted": {
+    "title": "Getting Started",
+    "intro": "Get ai-router up and running in your project in under 5 minutes.",
+    "step1Title": "1. Install",
+    "step1Desc": "Install the core package and optionally a bundler plugin:",
+    "step2Title": "2. Define Routes",
+    "step2Desc": "Create your route configuration with semantic descriptions:",
+    "step3Title": "3. Search",
+    "step3Desc": "Wait for the model to load, then search by meaning:",
+    "step4Title": "4. Cleanup",
+    "step4Desc": "Destroy the router when you're done (e.g. on component unmount):",
+    "note": "The first load downloads a ~22 MB ONNX model. It's cached by the browser for subsequent visits."
+  },
+  "apiReference": {
+    "title": "API Reference",
+    "smartRouterTitle": "SmartRouter",
+    "smartRouterDesc": "The main class for semantic route matching.",
+    "constructorTitle": "Constructor",
+    "constructorDesc": "Creates a new SmartRouter instance with the given options.",
+    "optionsTitle": "RouteOptions",
+    "routesDesc": "Array of routes to index. Each route has path, title, and optional description.",
+    "modelDesc": "HuggingFace model ID. Default: \"Xenova/all-MiniLM-L6-v2\". Must produce 384-dim vectors.",
+    "thresholdDesc": "Minimum similarity score (0–1). Default: 0.5.",
+    "readyTitle": "ready: Promise<void>",
+    "readyDesc": "Resolves when the model is loaded and routes are indexed. Resolves immediately during SSR.",
+    "searchTitle": "search(query: string): Promise<SearchResult | null>",
+    "searchDesc": "Finds the best matching route for a natural-language query. Returns null if no route meets the threshold or during SSR.",
+    "destroyTitle": "destroy(): void",
+    "destroyDesc": "Terminates the Web Worker and rejects all pending searches. Safe to call multiple times.",
+    "searchResultTitle": "SearchResult",
+    "searchResultDesc": "Returned by search(). Contains path (matched route URL) and score (similarity 0–1)."
+  },
+  "plugins": {
+    "title": "Plugins",
+    "intro": "ai-router provides bundler plugins that auto-scan your pages directory and generate route config at build time.",
+    "viteTitle": "Vite Plugin",
+    "viteDesc": "Install and configure the Vite plugin:",
+    "webpackTitle": "webpack Plugin",
+    "webpackDesc": "Install and configure the webpack plugin:",
+    "nextTitle": "Next.js Plugin",
+    "nextDesc": "The Next.js plugin wraps the webpack plugin with sensible defaults:",
+    "virtualModuleTitle": "Virtual Module",
+    "virtualModuleDesc": "All plugins expose a virtual:ai-router module that exports a routes array:",
+    "annotationTitle": "@ai-route Annotation",
+    "annotationDesc": "Add metadata to your page files with a comment annotation:"
+  },
+  "examples": {
+    "title": "Examples",
+    "intro": "Try the live search below — it uses ai-router to find the best matching documentation page.",
+    "liveSearchTitle": "Live Search Demo",
+    "liveSearchDesc": "Type a question or phrase and see which route matches best:",
+    "tryThese": "Try these queries:",
+    "query1": "how much does it cost?",
+    "query2": "how to install the library?",
+    "query3": "webpack configuration",
+    "query4": "what models are supported?",
+    "resultPath": "Matched route:",
+    "resultScore": "Confidence:",
+    "noResult": "No route matched above the threshold.",
+    "loading": "Loading AI model…"
+  },
+  "footer": {
+    "madeWith": "Built with ai-router + Next.js",
+    "license": "MIT License"
+  }
+}
