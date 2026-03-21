@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Loader2, ArrowRight } from 'lucide-react';
-import { SmartRouter } from 'ai-router';
-import type { SearchResult } from 'ai-router';
+import { SmartRouter } from '@van1s1mys/ai-router';
+import type { SearchResult } from '@van1s1mys/ai-router';
 import { routes } from 'virtual:ai-router';
 import { Dialog, DialogContent, DialogTrigger } from '@/shared/ui/dialog';
 import { Button } from '@/shared/ui/button';

@@ -1,5 +1,5 @@
 {
-  "name": "ai-router",
+  "name": "@van1s1mys/ai-router",
   "version": "1.0.0",
   "description": "Semantic search routing using AI embeddings — find the best route by meaning, not keywords",
   "type": "module",

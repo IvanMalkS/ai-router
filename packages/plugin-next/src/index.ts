@@ -26,7 +26,7 @@
  * @module
  */
 
-import { AiRouterPlugin } from 'ai-router-plugin-webpack';
+import { AiRouterPlugin } from '@van1s1mys/ai-router-plugin-webpack';
 import type { PluginOptions } from '@ai-router/shared';
 
 export type { PluginOptions } from '@ai-router/shared';

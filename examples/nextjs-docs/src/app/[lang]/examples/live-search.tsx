@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Loader2, Search, ArrowRight } from 'lucide-react';
-import { SmartRouter } from 'ai-router';
-import type { SearchResult } from 'ai-router';
+import { SmartRouter } from '@van1s1mys/ai-router';
+import type { SearchResult } from '@van1s1mys/ai-router';
 import { routes } from 'virtual:ai-router';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';

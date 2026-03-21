@@ -29,10 +29,10 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.2.3
         version: 1.2.4(@types/react@19.2.14)(react@19.2.4)
-      ai-router:
+      '@van1s1mys/ai-router':
         specifier: workspace:*
         version: link:../../packages/core
-      ai-router-plugin-next:
+      '@van1s1mys/ai-router-plugin-next':
         specifier: workspace:*
         version: link:../../packages/plugin-next
       class-variance-authority:
@@ -94,7 +94,7 @@ importers:
       '@ai-router/shared':
         specifier: workspace:*
         version: link:../shared
-      ai-router-plugin-webpack:
+      '@van1s1mys/ai-router-plugin-webpack':
         specifier: workspace:*
         version: link:../plugin-webpack
       next:

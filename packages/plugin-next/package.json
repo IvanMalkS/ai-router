@@ -1,5 +1,5 @@
 {
-  "name": "ai-router-plugin-next",
+  "name": "@van1s1mys/ai-router-plugin-next",
   "version": "1.0.0",
   "description": "Next.js plugin for ai-router — auto-scan app/pages dirs and generate route config",
   "type": "module",
@@ -33,7 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "@ai-router/shared": "workspace:*",
-    "ai-router-plugin-webpack": "workspace:*"
+    "@van1s1mys/ai-router-plugin-webpack": "workspace:*"
   },
   "peerDependencies": {
     "next": ">=13.0.0"
