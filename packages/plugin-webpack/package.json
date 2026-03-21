@@ -1,6 +1,6 @@
 {
   "name": "@van1s1mys/ai-router-plugin-webpack",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "webpack plugin for ai-router — auto-scan pages and generate route config",
   "type": "module",
   "main": "./dist/index.cjs",
