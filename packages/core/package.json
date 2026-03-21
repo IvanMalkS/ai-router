@@ -1,6 +1,6 @@
 {
   "name": "@van1s1mys/ai-router",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Semantic search routing using AI embeddings — find the best route by meaning, not keywords",
   "type": "module",
   "main": "./dist/index.cjs",
