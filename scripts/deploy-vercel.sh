@@ -2,7 +2,11 @@
 set -euo pipefail
 
 # ──────────────────────────────────────────────────────────────
-# Deploy examples to Vercel
+# Deploy examples to Vercel (prebuilt)
+#
+# Builds everything locally with pnpm, then uploads the result
+# to Vercel. This avoids Vercel trying to `npm install` workspace
+# dependencies which would fail.
 #
 # Usage:
 #   ./scripts/deploy-vercel.sh              # deploy preview
@@ -48,23 +52,27 @@ pnpm -r --filter='!example-*' build
 ok "Library build complete"
 popd > /dev/null
 
+# ── Build docs site locally ──────────────────────────────────
+
+info "Building docs site locally..."
+pushd "$EXAMPLE_DIR" > /dev/null
+vercel build $PROD_FLAG --yes
+ok "Docs site built"
+popd > /dev/null
+
 # ── Dry run exit ─────────────────────────────────────────────
 
 if [ -n "$DRY_RUN" ]; then
-  info "Building docs site (dry run)..."
-  pushd "$EXAMPLE_DIR" > /dev/null
-  pnpm build
-  popd > /dev/null
   warn "Dry run complete. Skipping deploy."
   exit 0
 fi
 
-# ── Deploy to Vercel ─────────────────────────────────────────
+# ── Deploy prebuilt to Vercel ────────────────────────────────
 
-info "Deploying to Vercel${PROD_FLAG:+ (production)}..."
+info "Deploying prebuilt output to Vercel${PROD_FLAG:+ (production)}..."
 pushd "$EXAMPLE_DIR" > /dev/null
 
-DEPLOY_URL=$(vercel $PROD_FLAG --yes)
+DEPLOY_URL=$(vercel deploy --prebuilt $PROD_FLAG --yes)
 
 popd > /dev/null
 
