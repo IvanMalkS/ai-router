@@ -39,15 +39,16 @@ command -v git  >/dev/null 2>&1 || die "git is required"
 # ── Detect base path ─────────────────────────────────────────
 
 if [ -n "${1:-}" ]; then
-  BASE_PATH="/$1"
+  REPO_NAME="$1"
 else
   REMOTE_URL=$(git -C "$ROOT" remote get-url origin 2>/dev/null || echo "")
   if [ -z "$REMOTE_URL" ]; then
     die "No git remote found. Pass repo name as argument: ./scripts/deploy-examples.sh <repo-name>"
   fi
   REPO_NAME=$(basename -s .git "$REMOTE_URL")
-  BASE_PATH="/$REPO_NAME"
 fi
+
+BASE_PATH="/$REPO_NAME"
 
 info "Base path: $BASE_PATH"
 
@@ -63,7 +64,12 @@ popd > /dev/null
 
 info "Building docs site..."
 pushd "$EXAMPLE_DIR" > /dev/null
-NEXT_PUBLIC_BASE_PATH="$BASE_PATH" pnpm build
+# Write base path to .env.local to avoid MSYS path conversion on Windows
+# (Git Bash converts "/foo" env vars to "C:/Program Files/Git/foo" in child processes)
+# Use trap to guarantee cleanup even if build fails
+echo "NEXT_PUBLIC_BASE_PATH=$BASE_PATH" > .env.local
+trap 'rm -f "$EXAMPLE_DIR/.env.local"' EXIT
+pnpm build
 ok "Docs site built -> $OUT_DIR"
 popd > /dev/null
 

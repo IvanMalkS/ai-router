@@ -3,7 +3,7 @@ import { locales, type Locale } from '@/shared/i18n/config';
 import { getDictionary } from '@/shared/i18n/dictionaries';
 import { Header } from '@/widgets/header';
 import { Footer } from '@/widgets/footer';
-import '../globals.css';
+import { PreloadSmartRouter } from '@/features/search';
 
 export async function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -20,12 +20,13 @@ export default async function LangLayout({
   const dict = await getDictionary(lang as Locale);
 
   return (
-    <html lang={lang}>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         <title>{dict.meta.title}</title>
         <meta name="description" content={dict.meta.description} />
       </head>
       <body className="min-h-screen flex flex-col">
+        <PreloadSmartRouter />
         <Header lang={lang} dict={dict} />
         <main className="flex-1">{children}</main>
         <Footer dict={dict} />

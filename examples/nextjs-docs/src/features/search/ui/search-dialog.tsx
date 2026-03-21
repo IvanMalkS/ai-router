@@ -17,6 +17,7 @@ import {
   CommandItem,
 } from '@/shared/ui/command';
 import { Badge } from '@/shared/ui/badge';
+import { routerOptions } from './router-options';
 
 interface SearchDialogProps {
   lang: string;
@@ -43,10 +44,8 @@ export function SearchDialog({ lang, placeholder, triggerText, loadingText, noRe
     if (routerRef.current) return;
 
     setIsLoading(true);
-    const sr = new SmartRouter({
-      routes,
-      threshold: 0.1,
-      model: ['Xenova/all-MiniLM-L6-v2', 'Xenova/multilingual-e5-small'],
+    const sr = SmartRouter.create({
+      ...routerOptions,
       onModelUpgrade: (modelId) => setActiveModel(modelId),
     });
     routerRef.current = sr;
@@ -58,11 +57,6 @@ export function SearchDialog({ lang, placeholder, triggerText, loadingText, noRe
         setActiveModel('Xenova/all-MiniLM-L6-v2');
       })
       .catch(() => setIsLoading(false));
-
-    return () => {
-      sr.destroy();
-      routerRef.current = null;
-    };
   }, [open]);
 
   const handleSearch = useCallback(

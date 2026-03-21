@@ -27,13 +27,15 @@ npm install ai-router ai-router-plugin-vite`}</code></pre>
           <p className="text-muted-foreground mb-3">{t.step2Desc}</p>
           <pre><code>{`import { SmartRouter } from 'ai-router';
 
-const router = new SmartRouter({
+const router = SmartRouter.create({
   routes: [
     { path: '/pricing', title: 'Pricing',
       description: 'cost, plans, subscription' },
     { path: '/contact', title: 'Contact',
       description: 'support, phone, address' },
   ],
+  // Light model first, then upgrade in the background
+  model: ['Xenova/all-MiniLM-L6-v2', 'Xenova/multilingual-e5-small'],
   threshold: 0.5,
 });`}</code></pre>
         </div>
@@ -41,7 +43,7 @@ const router = new SmartRouter({
         <div>
           <h2 className="text-xl font-semibold mb-2">{t.step3Title}</h2>
           <p className="text-muted-foreground mb-3">{t.step3Desc}</p>
-          <pre><code>{`await router.ready;
+          <pre><code>{`await router.ready; // first model ready — search works immediately
 
 const result = await router.search('how much does it cost?');
 // → { path: '/pricing', score: 0.87 }`}</code></pre>

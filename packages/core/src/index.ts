@@ -59,6 +59,8 @@ function createBlobWorker(): Worker {
  * ```
  */
 export class SmartRouter {
+  private static cache = new Map<string, SmartRouter>();
+
   private worker: Worker | null = null;
   private readyPromise: Promise<void>;
   private resolveReady!: () => void;
@@ -70,6 +72,69 @@ export class SmartRouter {
   private destroyed = false;
   private readonly ssr: boolean;
   private onModelUpgrade?: (modelId: string) => void;
+  private _cacheKey: string | null = null;
+
+  /**
+   * Returns a cached SmartRouter instance for the given options.
+   * If an instance with the same model configuration already exists and
+   * hasn't been destroyed, it is returned immediately — no new worker
+   * is spawned and no model is re-downloaded.
+   *
+   * Use this instead of `new SmartRouter()` when the router may be
+   * created multiple times (e.g. React component mounts/unmounts).
+   *
+   * @param options - Routes to index, model ID, and similarity threshold.
+   *
+   * @example
+   * ```ts
+   * // Safe to call on every mount — returns the same instance
+   * const router = SmartRouter.create({ routes, model: 'Xenova/all-MiniLM-L6-v2' });
+   * await router.ready;
+   * ```
+   */
+  static create(options: RouteOptions): SmartRouter {
+    const key = SmartRouter.cacheKey(options);
+
+    const cached = SmartRouter.cache.get(key);
+    if (cached && !cached.destroyed) return cached;
+
+    const instance = new SmartRouter(options);
+    instance._cacheKey = key;
+    SmartRouter.cache.set(key, instance);
+    return instance;
+  }
+
+  /**
+   * Pre-downloads the model(s) and indexes routes in the background
+   * so that a later {@link create} call returns an already-ready instance.
+   *
+   * Safe to call at page load — runs in a Web Worker and does not
+   * block the main thread. No-op on the server (SSR).
+   * Calling it multiple times with the same options is a no-op.
+   *
+   * @param options - Routes to index, model ID, and similarity threshold.
+   * @returns The pre-warming SmartRouter instance (await `.ready` if needed).
+   *
+   * @example
+   * ```ts
+   * // At page load — start downloading the model immediately
+   * SmartRouter.preload({ routes, model: ['Xenova/all-MiniLM-L6-v2', 'Xenova/multilingual-e5-small'] });
+   *
+   * // Later, when the user opens search — instant, model is already loaded
+   * const router = SmartRouter.create({ routes, model: ['Xenova/all-MiniLM-L6-v2', 'Xenova/multilingual-e5-small'] });
+   * await router.ready; // resolves immediately if preload finished
+   * ```
+   */
+  static preload(options: RouteOptions): SmartRouter {
+    return SmartRouter.create(options);
+  }
+
+  /** @internal Generates a stable cache key from options. */
+  private static cacheKey(options: RouteOptions): string {
+    return JSON.stringify(
+      Array.isArray(options.model) ? options.model : [options.model || 'Xenova/all-MiniLM-L6-v2'],
+    );
+  }
 
   /**
    * Creates a new SmartRouter instance.
@@ -252,6 +317,10 @@ export class SmartRouter {
   destroy() {
     if (this.destroyed) return;
     this.destroyed = true;
+
+    if (this._cacheKey) {
+      SmartRouter.cache.delete(this._cacheKey);
+    }
 
     this.rejectAllPending(new Error('SmartRouter destroyed'));
 

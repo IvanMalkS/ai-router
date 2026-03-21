@@ -31,6 +31,8 @@ User query: "how much does it cost?"
 - **Web Worker** — model runs off the main thread, zero UI jank
 - **SSR-safe** — no-op on the server, works with Next.js/Nuxt/etc.
 - **Tiny API** — `new SmartRouter()`, `.search()`, `.destroy()`
+- **Progressive model loading** — start with a fast model, upgrade to a better one in the background
+- **Instance caching** — `SmartRouter.create()` and `.preload()` reuse the same worker across mounts
 - **Framework plugins** — auto-scan routes for Next.js, Vite, and webpack
 - **Cached model** — ~22 MB on first load, then instant from browser cache
 
@@ -126,6 +128,42 @@ export default {
 };
 ```
 
+## Progressive model loading
+
+Start with a lightweight model for instant results, then seamlessly upgrade to a heavier one in the background:
+
+```ts
+const router = new SmartRouter({
+  routes,
+  model: ['Xenova/all-MiniLM-L6-v2', 'Xenova/multilingual-e5-small'],
+  onModelUpgrade: (modelId) => console.log(`Upgraded to ${modelId}`),
+});
+
+await router.ready; // resolves when the first (fast) model is ready
+```
+
+The router re-indexes all routes automatically when each subsequent model finishes loading. Searches keep working during the upgrade — no downtime.
+
+## Instance caching & preloading
+
+`SmartRouter.create()` returns a cached instance — safe to call on every React mount without re-downloading the model:
+
+```ts
+// Returns the same instance for the same model config
+const router = SmartRouter.create({ routes, model: 'Xenova/all-MiniLM-L6-v2' });
+```
+
+`SmartRouter.preload()` starts downloading the model at page load so it's already warm when the user needs it:
+
+```ts
+// At page load — fire and forget
+SmartRouter.preload({ routes, model: ['Xenova/all-MiniLM-L6-v2', 'Xenova/multilingual-e5-small'] });
+
+// Later, when the user opens search — instant
+const router = SmartRouter.create({ routes, model: ['Xenova/all-MiniLM-L6-v2', 'Xenova/multilingual-e5-small'] });
+await router.ready; // resolves immediately if preload finished
+```
+
 ## Multilingual support
 
 The default model (`Xenova/all-MiniLM-L6-v2`) works best for English. For other languages, use the multilingual model:
@@ -154,12 +192,21 @@ export default function PricingPage() { ... }
 | Option | Type | Default | Description |
 |---|---|---|---|
 | `routes` | `RouteConfig[]` | required | Routes to index |
-| `model` | `string` | `"Xenova/all-MiniLM-L6-v2"` | HuggingFace model ID (384-dim) |
+| `model` | `string \| string[]` | `"Xenova/all-MiniLM-L6-v2"` | Model ID or ordered array for progressive loading |
 | `threshold` | `number` | `0.5` | Minimum similarity score (0-1) |
+| `onModelUpgrade` | `(modelId: string) => void` | — | Called when the router switches to the next model |
+
+### `SmartRouter.create(options): SmartRouter`
+
+Returns a cached instance for the given model config. Safe to call on every component mount.
+
+### `SmartRouter.preload(options): SmartRouter`
+
+Same as `create()`, but intended to be called at page load to pre-warm the model.
 
 ### `router.ready: Promise<void>`
 
-Resolves when the model is loaded and routes are indexed.
+Resolves when the first model is loaded and routes are indexed.
 
 ### `router.search(query): Promise<SearchResult | null>`
 
@@ -167,7 +214,7 @@ Returns `{ path, score }` or `null` if no route meets the threshold.
 
 ### `router.destroy()`
 
-Terminates the worker and cleans up resources.
+Terminates the worker and removes the instance from cache.
 
 ## Development
 
