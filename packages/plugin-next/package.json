@@ -30,6 +30,15 @@
     "nextjs",
     "ai-router"
   ],
+  "homepage": "https://ivanmalks.github.io/ai-router/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IvanMalkS/ai-router.git",
+    "directory": "packages/plugin-next"
+  },
+  "bugs": {
+    "url": "https://github.com/IvanMalkS/ai-router/issues"
+  },
   "license": "MIT",
   "dependencies": {
     "@ai-router/shared": "workspace:*",

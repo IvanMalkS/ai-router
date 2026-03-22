@@ -34,6 +34,15 @@
     "spa",
     "navigation"
   ],
+  "homepage": "https://ivanmalks.github.io/ai-router/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IvanMalkS/ai-router.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/IvanMalkS/ai-router/issues"
+  },
   "license": "MIT",
   "devDependencies": {
     "esbuild": "^0.27.0"

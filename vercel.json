@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm -r --filter='!example-*' build && pnpm --filter example-nextjs-docs build",
+  "outputDirectory": "examples/nextjs-docs/out",
+  "installCommand": "pnpm install",
+  "framework": null
+}

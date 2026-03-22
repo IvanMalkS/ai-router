@@ -1,6 +1,11 @@
 # @van1s1mys/ai-router
 
+[![npm](https://img.shields.io/npm/v/@van1s1mys/ai-router)](https://www.npmjs.com/package/@van1s1mys/ai-router)
+[![GitHub](https://img.shields.io/github/stars/IvanMalkS/ai-router)](https://github.com/IvanMalkS/ai-router)
+
 Semantic search routing for SPAs — find the best route by meaning, not keywords.
+
+[Documentation](https://ivanmalks.github.io/ai-router/) | [Live Demo](https://ai-router-search.vercel.app) | [npm](https://www.npmjs.com/package/@van1s1mys/ai-router) | [GitHub](https://github.com/IvanMalkS/ai-router)
 
 Runs a HuggingFace embedding model inside a **Web Worker** and uses [Orama](https://orama.com) hybrid (text + vector) search to match user queries by semantic similarity.
 

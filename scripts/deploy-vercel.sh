@@ -2,16 +2,14 @@
 set -euo pipefail
 
 # ──────────────────────────────────────────────────────────────
-# Deploy examples to Vercel (prebuilt)
+# Deploy docs site to Vercel
 #
-# Builds everything locally with pnpm, then uploads the result
-# to Vercel. This avoids Vercel trying to `npm install` workspace
-# dependencies which would fail.
+# Pushes the project to Vercel which builds on their servers
+# using the commands from vercel.json.
 #
 # Usage:
 #   ./scripts/deploy-vercel.sh              # deploy preview
 #   ./scripts/deploy-vercel.sh --prod       # deploy to production
-#   DRY_RUN=1 ./scripts/deploy-vercel.sh    # build only, don't deploy
 #
 # Prerequisites:
 #   npm i -g vercel
@@ -19,8 +17,6 @@ set -euo pipefail
 # ──────────────────────────────────────────────────────────────
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-EXAMPLE_DIR="$ROOT/examples/nextjs-docs"
-DRY_RUN="${DRY_RUN:-}"
 PROD_FLAG=""
 
 if [[ "${1:-}" == "--prod" ]]; then
@@ -30,49 +26,23 @@ fi
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
 info()  { echo -e "${CYAN}[info]${NC}  $*"; }
 ok()    { echo -e "${GREEN}[ok]${NC}    $*"; }
-warn()  { echo -e "${YELLOW}[warn]${NC}  $*"; }
 die()   { echo -e "${RED}[error]${NC} $*" >&2; exit 1; }
 
 # ── Pre-checks ───────────────────────────────────────────────
 
-command -v pnpm   >/dev/null 2>&1 || die "pnpm is required"
 command -v vercel >/dev/null 2>&1 || die "vercel CLI is required. Install: npm i -g vercel"
 
-# ── Build library packages ───────────────────────────────────
+# ── Deploy to Vercel ─────────────────────────────────────────
 
-info "Building library packages..."
+info "Deploying to Vercel${PROD_FLAG:+ (production)}..."
 pushd "$ROOT" > /dev/null
-pnpm -r --filter='!example-*' build
-ok "Library build complete"
-popd > /dev/null
 
-# ── Build docs site locally ──────────────────────────────────
-
-info "Building docs site locally..."
-pushd "$EXAMPLE_DIR" > /dev/null
-vercel build $PROD_FLAG --yes
-ok "Docs site built"
-popd > /dev/null
-
-# ── Dry run exit ─────────────────────────────────────────────
-
-if [ -n "$DRY_RUN" ]; then
-  warn "Dry run complete. Skipping deploy."
-  exit 0
-fi
-
-# ── Deploy prebuilt to Vercel ────────────────────────────────
-
-info "Deploying prebuilt output to Vercel${PROD_FLAG:+ (production)}..."
-pushd "$EXAMPLE_DIR" > /dev/null
-
-DEPLOY_URL=$(vercel deploy --prebuilt $PROD_FLAG --yes)
+DEPLOY_URL=$(vercel deploy $PROD_FLAG --yes)
 
 popd > /dev/null
 
