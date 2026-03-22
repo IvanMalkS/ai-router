@@ -1,6 +1,6 @@
 {
   "name": "@van1s1mys/ai-router-plugin-vite",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Vite plugin for ai-router — auto-scan pages and generate route config",
   "type": "module",
   "main": "./dist/index.cjs",
